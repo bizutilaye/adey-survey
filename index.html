@@ -110,7 +110,6 @@
 <div class="bar" id="bar"><div class="inner">
   <div class="progress" id="progress"></div>
   <button class="submit" id="submit" type="button">አስገባ</button>
-  <div style="text-align:center;color:var(--hint);font-size:12px;margin-top:6px">ከተላከ በኋላ መቀየር አይቻልም</div>
 </div></div>
 
 <div class="thanks" id="notice" style="display:none">
@@ -123,7 +122,7 @@
 <div class="thanks" id="thanks">
   <div class="check">✓</div>
   <h2>ስለመረጡ እናመሰግናለን</h2>
-  <p style="color:var(--hint);margin:0">ምርጫዎ ተመዝግቧል፡፡ ከተላከ በኋላ መቀየር አይቻልም፡፡</p>
+  <p style="color:var(--hint);margin:0">ምርጫዎ ተመዝግቧል፡፡</p>
   <div class="summary card" id="summary"></div>
 </div>
 
@@ -226,7 +225,7 @@ function showNotice(kind, response) {
   if (kind === "already") {
     $("noticeIcon").textContent = "✓"; $("noticeIcon").style.background = "var(--brand-green)";
     $("noticeTitle").textContent = "ምርጫዎ ቀድሞ ተመዝግቧል";
-    $("noticeText").textContent = "በዚህ ቡድን መጠይቁን ሞልተዋል፡፡ ከተላከ በኋላ መቀየር አይቻልም፡፡ እናመሰግናለን!";
+    $("noticeText").textContent = "በዚህ ቡድን መጠይቁን ሞልተዋል፡፡ እናመሰግናለን!";
     const hs = (response && response.survey_houses) || [];
     if (hs.length) {
       $("noticeSummary").style.display = "block";
