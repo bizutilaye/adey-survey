@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="am">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>አደይ በሻሌ — ዳሰሳ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Ethiopic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+  :root{
+    --bg: var(--tg-theme-secondary-bg-color, #F2F4F7);
+    --card: var(--tg-theme-bg-color, #FFFFFF);
+    --text: var(--tg-theme-text-color, #14181F);
+    --hint: var(--tg-theme-hint-color, #6B7280);
+    --accent: var(--tg-theme-button-color, #C8902B);
+    --accent-text: var(--tg-theme-button-text-color, #FFFFFF);
+    --line: rgba(120,130,150,.18);
+    --soft: rgba(200,144,43,.10);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;background:var(--bg);color:var(--text);
+    font-family:"Noto Sans Ethiopic",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:15px;line-height:1.55}
+  .wrap{max-width:560px;margin:0 auto;padding:16px 16px 120px}
+  .brand{display:flex;align-items:center;gap:10px;margin:4px 0 14px}
+  .logo{width:38px;height:38px;border-radius:11px;background:var(--accent);color:var(--accent-text);
+    display:grid;place-items:center;font-weight:700;font-size:15px}
+  .brand h1{font-size:17px;margin:0;font-weight:700;line-height:1.3}
+  .brand small{display:block;color:var(--hint);font-size:12.5px;font-weight:500}
+  .card{background:var(--card);border-radius:16px;padding:16px;margin-bottom:12px;border:1px solid var(--line)}
+  .intro p{margin:0 0 8px}
+  .intro .more{display:none}
+  .intro.open .more{display:block}
+  .link{background:none;border:0;color:var(--accent);font:inherit;font-weight:600;padding:0;cursor:pointer}
+  .label{font-weight:700;font-size:15.5px;margin:0 0 4px}
+  .sub{color:var(--hint);font-size:13px;margin:0 0 12px}
+  .stepper{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .stepper button{width:48px;height:48px;border-radius:14px;border:1px solid var(--line);background:var(--bg);
+    color:var(--text);font-size:24px;font-weight:600;cursor:pointer}
+  .stepper button:disabled{opacity:.35}
+  .count{font-size:30px;font-weight:700;min-width:60px;text-align:center}
+  .count span{display:block;font-size:12px;color:var(--hint);font-weight:500;margin-top:-4px}
+  .house-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+  .pill{background:var(--soft);color:var(--accent);font-weight:700;font-size:13px;padding:4px 10px;border-radius:999px}
+  .done{font-size:12.5px;color:#16A34A;font-weight:600;display:none}
+  .house.ok .done{display:inline}
+  input[type=text],input[type=tel]{width:100%;height:46px;border-radius:12px;border:1px solid var(--line);
+    background:var(--bg);color:var(--text);padding:0 12px;font:inherit;outline:none}
+  input:focus{border-color:var(--accent)}
+  .field{margin-bottom:12px}
+  .field label{display:block;font-size:13px;color:var(--hint);margin-bottom:5px;font-weight:500}
+  .opt{display:flex;gap:10px;align-items:flex-start;padding:12px;border-radius:12px;border:1.5px solid var(--line);
+    margin-bottom:8px;cursor:pointer;transition:border-color .15s,background .15s}
+  .opt input{display:none}
+  .num{flex:none;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;
+    font-size:13px;font-weight:700;color:var(--hint);margin-top:1px}
+  .opt.sel{border-color:var(--accent);background:var(--soft)}
+  .opt.sel .num{background:var(--accent);border-color:var(--accent);color:var(--accent-text)}
+  .opt .t{font-size:14.5px}
+  .err{color:#DC2626;font-size:13px;margin:6px 0 0;display:none}
+  .show{display:block}
+  .bar{position:fixed;left:0;right:0;bottom:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+    background:linear-gradient(to top,var(--bg) 70%,transparent)}
+  .bar .inner{max-width:560px;margin:0 auto}
+  .submit{width:100%;height:52px;border:0;border-radius:14px;background:var(--accent);color:var(--accent-text);
+    font:inherit;font-weight:700;font-size:16px;cursor:pointer}
+  .submit:disabled{opacity:.5}
+  .progress{text-align:center;color:var(--hint);font-size:12.5px;margin-bottom:8px}
+  .thanks{display:none;text-align:center;padding:48px 16px}
+  .thanks .check{width:72px;height:72px;border-radius:50%;background:#16A34A;color:#fff;font-size:38px;
+    display:grid;place-items:center;margin:0 auto 16px}
+  .thanks h2{margin:0 0 6px;font-size:21px}
+  .summary{text-align:left;margin-top:18px}
+  .summary div{padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap" id="form">
+  <div class="brand">
+    <div class="logo">FH</div>
+    <div><h1>አደይ በሻሌ — የውስጥ ማጠናቀቂያ ዳሰሳ</h1><small>Flintstone Homes</small></div>
+  </div>
+
+  <div class="card intro" id="intro">
+    <p><b>ለአደይ በሻሌ ሳይት ደንበኞቻችን</b></p>
+    <p>የሚከተለው መጠይቅ ጥቅምት 08 2019 በአደይ በሻሌ ሳይት ላይ በተደረገው ስብሰባ የቀረቡትን የውስጥ ስራ ማጠናቀቂያ አማራጮች እና የተሰጡትን አሰተያየቶች መነሻ በማድረግ የተዘጋጀ ነው፡፡</p>
+    <div class="more">
+      <p>ውጤቱ አልሚውም ሆነ ደንበኞች ለልዩ ልዩ አማራጮች ቅድመ ዝግጅት እንዲያደርጉ ያግዛል፡፡</p>
+      <p>የዛሬ ምርጫዎ ለስራ ዕቅድ ከማገልገል ያለፈ በነገ ውሳኔዎ ላይ ምንም የውል ተጽዕኖ አይኖረውም፡፡</p>
+      <p>ውጤቱን ሁሉም ደንበኞች መጠይቁን ሲያጠናቅቁ እናጋራለን፡፡ እናመሰግናለን!</p>
+    </div>
+    <button class="link" id="moreBtn" type="button">ተጨማሪ ያንብቡ</button>
+  </div>
+
+  <div class="card">
+    <p class="label">ስንት ቤት አለዎት?</p>
+    <p class="sub">ለእያንዳንዱ ቤት የተለየ ምርጫ መስጠት ይችላሉ፡፡</p>
+    <div class="stepper">
+      <button type="button" id="minus" aria-label="ቀንስ">−</button>
+      <div class="count" id="count">1<span>ቤት</span></div>
+      <button type="button" id="plus" aria-label="ጨምር">+</button>
+    </div>
+  </div>
+
+  <div id="houses"></div>
+
+  <div class="card">
+    <p class="label">የእርስዎ መረጃ</p>
+    <div class="field"><label>ሙሉ ስም</label><input type="text" id="name" placeholder="ስም"></div>
+    <div class="field" style="margin:0"><label>ስልክ ቁጥር (አማራጭ)</label><input type="tel" id="phone" placeholder="09…" inputmode="tel"></div>
+  </div>
+</div>
+
+<div class="bar" id="bar"><div class="inner">
+  <div class="progress" id="progress"></div>
+  <button class="submit" id="submit" type="button">አስገባ</button>
+  <div style="text-align:center;color:var(--hint);font-size:12px;margin-top:6px">ከተላከ በኋላ መቀየር አይቻልም</div>
+</div></div>
+
+<div class="thanks" id="notice" style="display:none">
+  <div class="check" id="noticeIcon" style="background:#C8902B">!</div>
+  <h2 id="noticeTitle"></h2>
+  <p id="noticeText" style="color:var(--hint);margin:0"></p>
+  <div class="summary card" id="noticeSummary" style="display:none"></div>
+</div>
+
+<div class="thanks" id="thanks">
+  <div class="check">✓</div>
+  <h2>ስለመረጡ እናመሰግናለን</h2>
+  <p style="color:var(--hint);margin:0">ምርጫዎ ተመዝግቧል፡፡ ከተላከ በኋላ መቀየር አይቻልም፡፡</p>
+  <div class="summary card" id="summary"></div>
+</div>
+
+<script>
+const OPTIONS = [
+  "ካቀረባቸው የቁሳቁስ እና የዋጋ አማራጮች ለአቅሜ የሚመጥነውን በዋጋ ተደራድሬ በአልሚው አሰራለሁ",
+  "የራሴን ዕቃ አቅርቤ በአልሚው የጉልበት ሰራተኞች ቀሪውን ስራ አጠናቅቃለሁ",
+  "ከ ከፊል ማጠናቀቂያ (semi finished) ስራዎች መጠናቀቅ በኋላ ቀሪውን በራሴ ሰራተኛ አጠናቅቃለሁ",
+  "አሁን ከአልሚው ጋር ያለኝ ውል ሙሉ የማጠናቀቂያ ስራዎችን ስለሚያካትት፣ በውሉ መሰረት ከአልሚው ጋር እቀጥላለሁ፡፡"
+];
+const MAX = 7;
+const API = "https://mlskenlcpxrcnnicmczp.supabase.co/functions/v1/adey-survey";
+const tg = window.Telegram && Telegram.WebApp;
+if (tg) { tg.ready(); tg.expand(); }
+const tgUser = tg && tg.initDataUnsafe && tg.initDataUnsafe.user;
+
+let n = 1;
+const state = []; // [{choice}]
+const $ = (id) => document.getElementById(id);
+
+if (tgUser) $("name").value = [tgUser.first_name, tgUser.last_name].filter(Boolean).join(" ");
+$("moreBtn").onclick = () => { const o = $("intro").classList.toggle("open"); $("moreBtn").textContent = o ? "አሳንስ" : "ተጨማሪ ያንብቡ"; };
+
+function render() {
+  while (state.length < n) state.push({ choice: null });
+  state.length = n;
+  $("count").innerHTML = n + "<span>ቤት</span>";
+  $("minus").disabled = n <= 1; $("plus").disabled = n >= MAX;
+  const wrap = $("houses"); wrap.innerHTML = "";
+  state.forEach((h, i) => {
+    const el = document.createElement("div");
+    el.className = "card house" + (h.choice ? " ok" : "");
+    el.innerHTML = `
+      <div class="house-head"><span class="pill">ቤት ${i + 1}</span><span class="done">✓ ተመርጧል</span></div>
+      <p class="label" style="font-size:14.5px">የውስጥ ማጠናቀቂያ ሥራ እንዴት ቢከናወን ይመርጣሉ?</p>
+      ${OPTIONS.map((t, k) => `<label class="opt${h.choice === k + 1 ? " sel" : ""}"><input type="radio" name="h${i}" value="${k + 1}"><span class="num">${k + 1}</span><span class="t">${t}</span></label>`).join("")}
+      <p class="err">እባክዎ አንድ ምርጫ ይምረጡ</p>`;
+    el.querySelectorAll(".opt").forEach((o) => o.onclick = () => {
+      h.choice = Number(o.querySelector("input").value);
+      el.querySelectorAll(".opt").forEach((x) => x.classList.remove("sel"));
+      o.classList.add("sel"); el.classList.add("ok"); el.querySelector(".err").classList.remove("show");
+      tg && tg.HapticFeedback && tg.HapticFeedback.selectionChanged();
+      progress();
+    });
+    wrap.appendChild(el);
+  });
+  progress();
+}
+function progress() {
+  const done = state.filter((h) => h.choice).length;
+  $("progress").textContent = `${done} / ${n} ቤት ተመርጧል`;
+}
+$("minus").onclick = () => { if (n > 1) { n--; render(); } };
+$("plus").onclick = () => { if (n < MAX) { n++; render(); } };
+
+$("submit").onclick = async () => {
+  const missing = state.findIndex((h) => !h.choice);
+  if (missing >= 0) {
+    const card = $("houses").children[missing];
+    card.querySelector(".err").classList.add("show");
+    card.scrollIntoView({ behavior: "smooth", block: "center" });
+    tg && tg.HapticFeedback && tg.HapticFeedback.notificationOccurred("error");
+    return;
+  }
+  const payload = {
+    init_data: tg ? tg.initData : "",
+    start_param: tg && tg.initDataUnsafe ? tg.initDataUnsafe.start_param : null,
+    name: $("name").value.trim(), phone: $("phone").value.trim(),
+    houses: state.map((h, i) => ({ house_index: i + 1, choice: h.choice })),
+  };
+  $("submit").disabled = true; $("submit").textContent = "በመላክ ላይ…";
+  let res;
+  try { res = await post("/submit", payload); } catch { res = { ok: false, error: "network" }; }
+  if (!res.ok) {
+    $("submit").disabled = false; $("submit").textContent = "አስገባ";
+    if (res.error === "already_submitted") return showNotice("already");
+    const msg = ERRORS[res.error] || ERRORS.network;
+    tg && tg.showAlert ? tg.showAlert(msg) : alert(msg);
+    return;
+  }
+  $("form").style.display = "none"; $("bar").style.display = "none"; $("thanks").style.display = "block";
+  $("summary").innerHTML = payload.houses.map((h) => `<div><b>ቤት ${h.house_index}</b> → ምርጫ ${h.choice}</div>`).join("");
+  tg && tg.HapticFeedback && tg.HapticFeedback.notificationOccurred("success");
+};
+const ERRORS = {
+  network: "ይቅርታ፣ መላክ አልተቻለም፡፡ እባክዎ ኢንተርኔትዎን አረጋግጠው እንደገና ይሞክሩ፡፡",
+  not_member: "ይህንን መጠይቅ መሙላት የሚችሉት የቡድኑ አባላት ብቻ ናቸው፡፡",
+  invalid_session: "እባክዎ መጠይቁን በቡድኑ ውስጥ ካለው ቁልፍ ይክፈቱ፡፡",
+  no_group: "እባክዎ መጠይቁን በቡድኑ ውስጥ ካለው ቁልፍ ይክፈቱ፡፡",
+  unknown_group: "እባክዎ መጠይቁን በቡድኑ ውስጥ ካለው ቁልፍ ይክፈቱ፡፡",
+};
+async function post(path, body) {
+  const r = await fetch(API + path, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
+  return r.json();
+}
+function showNotice(kind, response) {
+  $("form").style.display = "none"; $("bar").style.display = "none"; $("notice").style.display = "block";
+  if (kind === "already") {
+    $("noticeIcon").textContent = "✓"; $("noticeIcon").style.background = "#16A34A";
+    $("noticeTitle").textContent = "ምርጫዎ ቀድሞ ተመዝግቧል";
+    $("noticeText").textContent = "በዚህ ቡድን መጠይቁን ሞልተዋል፡፡ ከተላከ በኋላ መቀየር አይቻልም፡፡ እናመሰግናለን!";
+    const hs = (response && response.survey_houses) || [];
+    if (hs.length) {
+      $("noticeSummary").style.display = "block";
+      $("noticeSummary").innerHTML = hs.sort((a, b) => a.house_index - b.house_index).map((h) => `<div><b>ቤት ${h.house_index}</b> → ምርጫ ${h.choice}</div>`).join("");
+    }
+  } else {
+    $("noticeTitle").textContent = "መጠይቁን ከቡድኑ ይክፈቱ";
+    $("noticeText").textContent = ERRORS[kind] || ERRORS.no_group;
+  }
+}
+async function init() {
+  render();
+  const startParam = tg && tg.initDataUnsafe ? tg.initDataUnsafe.start_param : null;
+  if (!tg || !tg.initData) return; // plain browser = preview mode
+  if (!startParam) return showNotice("no_group");
+  try {
+    const st = await post("/status", { init_data: tg.initData, start_param: startParam });
+    if (!st.ok) return showNotice(st.error);
+    if (st.submitted) return showNotice("already", st.response);
+  } catch { /* offline: let them fill; submit will report */ }
+}
+init();
+</script>
+</body>
+</html>
