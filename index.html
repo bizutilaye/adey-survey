@@ -2,6 +2,7 @@
 <html lang="am">
 <head>
 <meta charset="utf-8">
+<meta name="color-scheme" content="light only">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>አደይ በሻሌ — ዳሰሳ</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -9,10 +10,10 @@
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
   :root{
-    --bg: var(--tg-theme-secondary-bg-color, #F2F4F7);
-    --card: var(--tg-theme-bg-color, #FFFFFF);
-    --text: var(--tg-theme-text-color, #14181F);
-    --hint: var(--tg-theme-hint-color, #6B7280);
+    --bg: #F2F4F7;
+    --card: #FFFFFF;
+    --text: #14181F;
+    --hint: #6B7280;
     --accent: #F2380B;          /* Flintstone roof orange */
     --accent-text: #FFFFFF;
     --brand-green: #1B7A1B;     /* Flintstone Homes green */
@@ -136,7 +137,11 @@ const OPTIONS = [
 const MAX = 7;
 const API = "https://mlskenlcpxrcnnicmczp.supabase.co/functions/v1/adey-survey";
 const tg = window.Telegram && Telegram.WebApp;
-if (tg) { tg.ready(); tg.expand(); }
+if (tg) {
+  tg.ready(); tg.expand();
+  // Always light, whatever the user's Telegram theme is.
+  try { tg.setHeaderColor("#F2F4F7"); tg.setBackgroundColor("#F2F4F7"); tg.setBottomBarColor && tg.setBottomBarColor("#F2F4F7"); } catch (e) {}
+}
 const tgUser = tg && tg.initDataUnsafe && tg.initDataUnsafe.user;
 
 let n = 1;
