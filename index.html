@@ -104,11 +104,6 @@
 
   <div id="houses"></div>
 
-  <div class="card">
-    <p class="label">የእርስዎ መረጃ</p>
-    <div class="field"><label>ሙሉ ስም</label><input type="text" id="name" placeholder="ስም"></div>
-    <div class="field" style="margin:0"><label>ስልክ ቁጥር (አማራጭ)</label><input type="tel" id="phone" placeholder="09…" inputmode="tel"></div>
-  </div>
 </div>
 
 <div class="bar" id="bar"><div class="inner">
@@ -148,7 +143,6 @@ let n = 1;
 const state = []; // [{choice}]
 const $ = (id) => document.getElementById(id);
 
-if (tgUser) $("name").value = [tgUser.first_name, tgUser.last_name].filter(Boolean).join(" ");
 $("moreBtn").onclick = () => { const o = $("intro").classList.toggle("open"); $("moreBtn").textContent = o ? "አሳንስ" : "ተጨማሪ ያንብቡ"; };
 
 function render() {
@@ -195,7 +189,6 @@ $("submit").onclick = async () => {
   const payload = {
     init_data: tg ? tg.initData : "",
     start_param: tg && tg.initDataUnsafe ? tg.initDataUnsafe.start_param : null,
-    name: $("name").value.trim(), phone: $("phone").value.trim(),
     houses: state.map((h, i) => ({ house_index: i + 1, choice: h.choice })),
   };
   $("submit").disabled = true; $("submit").textContent = "በመላክ ላይ…";
