@@ -13,25 +13,25 @@
     --card: var(--tg-theme-bg-color, #FFFFFF);
     --text: var(--tg-theme-text-color, #14181F);
     --hint: var(--tg-theme-hint-color, #6B7280);
-    --accent: var(--tg-theme-button-color, #C8902B);
-    --accent-text: var(--tg-theme-button-text-color, #FFFFFF);
+    --accent: #F2380B;          /* Flintstone roof orange */
+    --accent-text: #FFFFFF;
+    --brand-green: #1B7A1B;     /* Flintstone Homes green */
     --line: rgba(120,130,150,.18);
-    --soft: rgba(200,144,43,.10);
+    --soft: rgba(242,56,11,.08);
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0;background:var(--bg);color:var(--text);
     font-family:"Noto Sans Ethiopic",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:15px;line-height:1.55}
   .wrap{max-width:560px;margin:0 auto;padding:16px 16px 120px}
-  .brand{display:flex;align-items:center;gap:10px;margin:4px 0 14px}
-  .logo{width:38px;height:38px;border-radius:11px;background:var(--accent);color:var(--accent-text);
-    display:grid;place-items:center;font-weight:700;font-size:15px}
-  .brand h1{font-size:17px;margin:0;font-weight:700;line-height:1.3}
-  .brand small{display:block;color:var(--hint);font-size:12.5px;font-weight:500}
+  .brand{background:#FFFFFF;border-radius:18px;border:1px solid var(--line);padding:14px 16px 12px;
+    margin:4px 0 12px;text-align:center;border-top:4px solid var(--accent)}
+  .brand img{display:block;width:62%;max-width:240px;height:auto;margin:0 auto 8px}
+  .brand h1{font-size:16.5px;margin:0;font-weight:700;line-height:1.35;color:var(--brand-green)}
   .card{background:var(--card);border-radius:16px;padding:16px;margin-bottom:12px;border:1px solid var(--line)}
   .intro p{margin:0 0 8px}
   .intro .more{display:none}
   .intro.open .more{display:block}
-  .link{background:none;border:0;color:var(--accent);font:inherit;font-weight:600;padding:0;cursor:pointer}
+  .link{background:none;border:0;color:var(--brand-green);font:inherit;font-weight:600;padding:0;cursor:pointer}
   .label{font-weight:700;font-size:15.5px;margin:0 0 4px}
   .sub{color:var(--hint);font-size:13px;margin:0 0 12px}
   .stepper{display:flex;align-items:center;justify-content:space-between;gap:12px}
@@ -41,8 +41,8 @@
   .count{font-size:30px;font-weight:700;min-width:60px;text-align:center}
   .count span{display:block;font-size:12px;color:var(--hint);font-weight:500;margin-top:-4px}
   .house-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-  .pill{background:var(--soft);color:var(--accent);font-weight:700;font-size:13px;padding:4px 10px;border-radius:999px}
-  .done{font-size:12.5px;color:#16A34A;font-weight:600;display:none}
+  .pill{background:rgba(27,122,27,.10);color:var(--brand-green);font-weight:700;font-size:13px;padding:4px 10px;border-radius:999px}
+  .done{font-size:12.5px;color:var(--brand-green);font-weight:600;display:none}
   .house.ok .done{display:inline}
   input[type=text],input[type=tel]{width:100%;height:46px;border-radius:12px;border:1px solid var(--line);
     background:var(--bg);color:var(--text);padding:0 12px;font:inherit;outline:none}
@@ -67,7 +67,7 @@
   .submit:disabled{opacity:.5}
   .progress{text-align:center;color:var(--hint);font-size:12.5px;margin-bottom:8px}
   .thanks{display:none;text-align:center;padding:48px 16px}
-  .thanks .check{width:72px;height:72px;border-radius:50%;background:#16A34A;color:#fff;font-size:38px;
+  .thanks .check{width:72px;height:72px;border-radius:50%;background:var(--brand-green);color:#fff;font-size:38px;
     display:grid;place-items:center;margin:0 auto 16px}
   .thanks h2{margin:0 0 6px;font-size:21px}
   .summary{text-align:left;margin-top:18px}
@@ -77,8 +77,8 @@
 <body>
 <div class="wrap" id="form">
   <div class="brand">
-    <div class="logo">FH</div>
-    <div><h1>አደይ በሻሌ — የውስጥ ማጠናቀቂያ ዳሰሳ</h1><small>Flintstone Homes</small></div>
+    <img src="logo.png" alt="Flintstone Homes">
+    <h1>አደይ በሻሌ — የውስጥ ማጠናቀቂያ ዳሰሳ</h1>
   </div>
 
   <div class="card intro" id="intro">
@@ -113,7 +113,7 @@
 </div></div>
 
 <div class="thanks" id="notice" style="display:none">
-  <div class="check" id="noticeIcon" style="background:#C8902B">!</div>
+  <div class="check" id="noticeIcon" style="background:var(--accent)">!</div>
   <h2 id="noticeTitle"></h2>
   <p id="noticeText" style="color:var(--hint);margin:0"></p>
   <div class="summary card" id="noticeSummary" style="display:none"></div>
@@ -219,7 +219,7 @@ async function post(path, body) {
 function showNotice(kind, response) {
   $("form").style.display = "none"; $("bar").style.display = "none"; $("notice").style.display = "block";
   if (kind === "already") {
-    $("noticeIcon").textContent = "✓"; $("noticeIcon").style.background = "#16A34A";
+    $("noticeIcon").textContent = "✓"; $("noticeIcon").style.background = "var(--brand-green)";
     $("noticeTitle").textContent = "ምርጫዎ ቀድሞ ተመዝግቧል";
     $("noticeText").textContent = "በዚህ ቡድን መጠይቁን ሞልተዋል፡፡ ከተላከ በኋላ መቀየር አይቻልም፡፡ እናመሰግናለን!";
     const hs = (response && response.survey_houses) || [];
